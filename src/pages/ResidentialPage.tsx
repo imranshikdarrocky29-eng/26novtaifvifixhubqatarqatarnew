@@ -3,9 +3,9 @@ import { RoutePath, routeToPath } from '../types/navigation';
 import {
   COMPANY_INFO,
   IMAGES,
-  PLUMBING_SERVICES,
   getWhatsAppUrl,
 } from '../data/plumbingData';
+import { useServicesContent } from '../context/ServicesContentContext';
 import { ResilientImage } from '../components/ResilientImage';
 import { CallToActionBand } from '../components/CallToActionBand';
 
@@ -14,6 +14,7 @@ interface ResidentialPageProps {
 }
 
 export function ResidentialPage({ onNavigate }: ResidentialPageProps) {
+  const { plumbingServices } = useServicesContent();
   const residentialSlugs = [
     'emergency-plumbing-services',
     'blocked-drain-and-drainage-cleaning',
@@ -25,7 +26,7 @@ export function ResidentialPage({ onNavigate }: ResidentialPageProps) {
     'shower-and-sanitary-fittings-installation',
   ];
 
-  const residentialServices = PLUMBING_SERVICES.filter((s) =>
+  const residentialServices = plumbingServices.filter((s) =>
     residentialSlugs.includes(s.slug)
   );
 

@@ -3,9 +3,9 @@ import { RoutePath, routeToPath } from '../types/navigation';
 import {
   COMPANY_INFO,
   IMAGES,
-  PLUMBING_SERVICES,
   getWhatsAppUrl,
 } from '../data/plumbingData';
+import { useServicesContent } from '../context/ServicesContentContext';
 import { ResilientImage } from '../components/ResilientImage';
 import { CallToActionBand } from '../components/CallToActionBand';
 
@@ -14,6 +14,7 @@ interface CommercialPageProps {
 }
 
 export function CommercialPage({ onNavigate }: CommercialPageProps) {
+  const { plumbingServices } = useServicesContent();
   const commercialSlugs = [
     'emergency-plumbing-services',
     'pipe-installation-repair-and-replacement',
@@ -23,7 +24,7 @@ export function CommercialPage({ onNavigate }: CommercialPageProps) {
     'tap-faucet-and-mixer-replacement',
   ];
 
-  const commercialServices = PLUMBING_SERVICES.filter((s) =>
+  const commercialServices = plumbingServices.filter((s) =>
     commercialSlugs.includes(s.slug)
   );
 

@@ -10,7 +10,8 @@ export type RoutePath =
   | { page: 'areas' }
   | { page: 'work-gallery' }
   | { page: 'blog'; slug?: string }
-  | { page: 'contact'; preselectedService?: string };
+  | { page: 'contact'; preselectedService?: string }
+  | { page: 'panel' };
 
 export const TRADE_SERVICE_SLUGS = [
   'electric-service',
@@ -51,6 +52,8 @@ export function routeToPath(route: RoutePath): string {
       return route.preselectedService
         ? `/contact?service=${encodeURIComponent(route.preselectedService)}`
         : '/contact';
+    case 'panel':
+      return '/panel';
   }
 }
 
@@ -87,5 +90,6 @@ export function parseLocationToRoute(pathname: string, search = ''): RoutePath {
     const service = params.get('service') || undefined;
     return { page: 'contact', preselectedService: service };
   }
+  if (head === 'panel') return { page: 'panel' };
   return { page: 'home' };
 }

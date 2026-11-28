@@ -1,7 +1,7 @@
 import { ArrowLeft, ArrowRight, Check, Phone, MessageCircle } from 'lucide-react';
 import { RoutePath, routeToPath } from '../types/navigation';
 import { COMPANY_INFO, getWhatsAppUrl } from '../data/plumbingData';
-import { OUR_SERVICES_MENU, TRADE_SERVICES } from '../data/tradeServicesData';
+import { useServicesContent } from '../context/ServicesContentContext';
 import { ResilientImage } from '../components/ResilientImage';
 import { CallToActionBand } from '../components/CallToActionBand';
 
@@ -11,8 +11,9 @@ interface TradeServicePageProps {
 }
 
 export function TradeServicePage({ slug, onNavigate }: TradeServicePageProps) {
+  const { coreServices, tradeServices } = useServicesContent();
   const service =
-    TRADE_SERVICES.find((s) => s.slug === slug) || TRADE_SERVICES[0];
+    tradeServices.find((s) => s.slug === slug) || tradeServices[0];
 
   const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, route: RoutePath) => {
     e.preventDefault();
@@ -156,7 +157,7 @@ export function TradeServicePage({ slug, onNavigate }: TradeServicePageProps) {
                   All FixHub Qatar Services
                 </h2>
                 <ul className="mt-4 space-y-2 text-sm">
-                  {OUR_SERVICES_MENU.map((item) => {
+                  {coreServices.map((item) => {
                     const isCurrent = item.slug === service.slug;
                     return (
                       <li key={item.slug}>

@@ -11,11 +11,10 @@ import {
 } from 'lucide-react';
 import {
   COMPANY_INFO,
-  PLUMBING_SERVICES,
   SERVICE_AREAS,
   getWhatsAppUrl,
 } from '../data/plumbingData';
-import { TRADE_SERVICES } from '../data/tradeServicesData';
+import { useServicesContent } from '../context/ServicesContentContext';
 
 interface ContactPageProps {
   preselectedService?: string;
@@ -40,12 +39,13 @@ interface FormErrors {
 }
 
 export function ContactPage({ preselectedService }: ContactPageProps) {
+  const { plumbingServices, tradeServices } = useServicesContent();
   const [form, setForm] = useState<FormState>({
     name: '',
     phone: '',
     email: '',
     area: SERVICE_AREAS[0].name,
-    service: preselectedService || PLUMBING_SERVICES[0].title,
+    service: preselectedService || plumbingServices[0]?.title || 'Plumbing Service',
     propertyType: 'Residential',
     urgency: 'Urgent Today',
     details: '',
@@ -397,14 +397,14 @@ Details: ${form.details || 'Requesting plumbing service / quote.'}`;
                           className="w-full px-3.5 py-2.5 text-sm rounded-lg border border-slate-300 bg-white text-[#041E42] focus:outline-none focus:ring-2 focus:ring-[#041E42]"
                         >
                           <optgroup label="Plumbing Services">
-                            {PLUMBING_SERVICES.map((service) => (
+                            {plumbingServices.map((service) => (
                               <option key={service.slug} value={service.title}>
                                 {service.title}
                               </option>
                             ))}
                           </optgroup>
                           <optgroup label="Additional Home &amp; Technical Services">
-                            {TRADE_SERVICES.map((service) => (
+                            {tradeServices.map((service) => (
                               <option key={service.slug} value={service.label}>
                                 {service.label}
                               </option>
