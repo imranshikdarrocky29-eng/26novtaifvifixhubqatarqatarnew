@@ -2,9 +2,9 @@ import { ArrowLeft, ArrowRight, Check, Phone, MessageCircle } from 'lucide-react
 import { RoutePath, routeToPath } from '../types/navigation';
 import {
   COMPANY_INFO,
-  PLUMBING_SERVICES,
   getWhatsAppUrl,
 } from '../data/plumbingData';
+import { useServicesContent } from '../context/ServicesContentContext';
 import { ResilientImage } from '../components/ResilientImage';
 import { CallToActionBand } from '../components/CallToActionBand';
 
@@ -14,10 +14,11 @@ interface ServiceDetailPageProps {
 }
 
 export function ServiceDetailPage({ slug, onNavigate }: ServiceDetailPageProps) {
+  const { plumbingServices } = useServicesContent();
   const service =
-    PLUMBING_SERVICES.find((s) => s.slug === slug) || PLUMBING_SERVICES[0];
+    plumbingServices.find((s) => s.slug === slug) || plumbingServices[0];
 
-  const related = PLUMBING_SERVICES.filter(
+  const related = plumbingServices.filter(
     (s) => s.slug !== service.slug && s.category === service.category
   ).slice(0, 3);
 

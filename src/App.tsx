@@ -9,8 +9,12 @@ import {
   parseLocationToRoute,
   routeToPath,
 } from './types/navigation';
-import { PLUMBING_SERVICES, BLOG_POSTS } from './data/plumbingData';
-import { TRADE_SERVICES } from './data/tradeServicesData';
+import { BLOG_POSTS, type PlumbingService } from './data/plumbingData';
+import type { TradeServiceDetail } from './data/tradeServicesData';
+import {
+  ServicesContentProvider,
+  useServicesContent,
+} from './context/ServicesContentContext';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { FloatingContactButtons } from './components/FloatingContactButtons';
@@ -25,8 +29,13 @@ import { ServiceAreasPage } from './pages/ServiceAreasPage';
 import { WorkGalleryPage } from './pages/WorkGalleryPage';
 import { BlogPage } from './pages/BlogPage';
 import { ContactPage } from './pages/ContactPage';
+import { AdminPanelPage } from './pages/AdminPanelPage';
 
-function getPageSeo(route: RoutePath): { title: string; description: string } {
+function getPageSeo(
+  route: RoutePath,
+  plumbingServices: PlumbingService[],
+  tradeServices: TradeServiceDetail[]
+): { title: string; description: string } {
   switch (route.page) {
     case 'home':
       return {
@@ -48,7 +57,7 @@ function getPageSeo(route: RoutePath): { title: string; description: string } {
           'Explore 9 specialized plumbing services in Qatar including emergency repairs, pipe replacement, drain cleaning, bathrooms, kitchens, and water tanks.',
       };
     case 'service-detail': {
-      const svc = PLUMBING_SERVICES.find((s) => s.slug === route.slug);
+      const svc = plumbingServices.find((s) => s.slug === route.slug);
       return {
         title: svc
           ? `${svc.title} in Qatar – FixHub Qatar`
@@ -59,7 +68,7 @@ function getPageSeo(route: RoutePath): { title: string; description: string } {
       };
     }
     case 'trade-service': {
-      const svc = TRADE_SERVICES.find((s) => s.slug === route.slug);
+      const svc = tradeServices.find((s) => s.slug === route.slug);
       return {
         title: svc
           ? `${svc.label} in Qatar – FixHub Qatar`
@@ -112,10 +121,17 @@ function getPageSeo(route: RoutePath): { title: string; description: string } {
         description:
           'Call +974 3103 6428, message on WhatsApp, or book an online inspection or quotation with FixHub Qatar.',
       };
+    case 'panel':
+      return {
+        title: 'Admin Panel – FixHub Qatar Service Manager',
+        description:
+          'Manage service photos, titles, descriptions, and technical checklists for FixHub Qatar.',
+      };
   }
 }
 
-export default function App() {
+function AppContent() {
+  const { plumbingServices, tradeServices } = useServicesContent();
   const [route, setRoute] = useState<RoutePath>(() =>
     parseLocationToRoute(window.location.pathname, window.location.search)
   );
@@ -130,13 +146,13 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const seo = getPageSeo(route);
+    const seo = getPageSeo(route, plumbingServices, tradeServices);
     document.title = seo.title;
     const descTag = document.querySelector('meta[name="description"]');
     if (descTag) {
       descTag.setAttribute('content', seo.description);
     }
-  }, [route]);
+  }, [route, plumbingServices, tradeServices]);
 
   const handleNavigate = (nextRoute: RoutePath) => {
     const nextPath = routeToPath(nextRoute);
@@ -148,9 +164,11 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'auto' });
   };
 
+  const isPanel = route.page === 'panel';
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-[#041E42]">
-      <Header currentRoute={route} onNavigate={handleNavigate} />
+      {!isPanel && <Header currentRoute={route} onNavigate={handleNavigate} />}
 
       <main className="flex-1">
         {route.page === 'home' && <HomePage onNavigate={handleNavigate} />}
@@ -178,10 +196,19 @@ export default function App() {
         {route.page === 'contact' && (
           <ContactPage preselectedService={route.preselectedService} />
         )}
+        {route.page === 'panel' && <AdminPanelPage onNavigate={handleNavigate} />}
       </main>
 
-      <Footer onNavigate={handleNavigate} />
-      <FloatingContactButtons />
+      {!isPanel && <Footer onNavigate={handleNavigate} />}
+      {!isPanel && <FloatingContactButtons />}
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <ServicesContentProvider>
+      <AppContent />
+    </ServicesContentProvider>
   );
 }

@@ -1,13 +1,14 @@
 import { Phone, MessageCircle, Mail, MapPin, Clock, Banknote, Smartphone } from 'lucide-react';
 import { RoutePath, routeToPath } from '../types/navigation';
 import { BRAND_LOGO, COMPANY_INFO, getWhatsAppUrl } from '../data/plumbingData';
-import { OUR_SERVICES_MENU } from '../data/tradeServicesData';
+import { useServicesContent } from '../context/ServicesContentContext';
 
 interface FooterProps {
   onNavigate: (route: RoutePath) => void;
 }
 
 export function Footer({ onNavigate }: FooterProps) {
+  const { coreServices } = useServicesContent();
   const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, route: RoutePath) => {
     e.preventDefault();
     onNavigate(route);
@@ -122,7 +123,7 @@ export function Footer({ onNavigate }: FooterProps) {
               Our Services
             </h3>
             <ul className="mt-4 space-y-2.5 text-sm">
-              {OUR_SERVICES_MENU.map((service) => (
+              {coreServices.map((service) => (
                 <li key={service.slug}>
                   <a
                     href={routeToPath(service.route)}

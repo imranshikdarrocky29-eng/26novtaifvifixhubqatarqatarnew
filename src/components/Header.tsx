@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { RoutePath, routeToPath } from '../types/navigation';
 import { BRAND_LOGO, COMPANY_INFO, getWhatsAppUrl } from '../data/plumbingData';
-import { OUR_SERVICES_MENU } from '../data/tradeServicesData';
+import { useServicesContent } from '../context/ServicesContentContext';
 
 interface HeaderProps {
   currentRoute: RoutePath;
@@ -18,6 +18,7 @@ const NAV_ITEMS: { label: string; route: RoutePath; matchPages: RoutePath['page'
 ];
 
 export function Header({ currentRoute, onNavigate }: HeaderProps) {
+  const { coreServices } = useServicesContent();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
@@ -120,7 +121,7 @@ export function Header({ currentRoute, onNavigate }: HeaderProps) {
                   aria-label="Our Services list"
                   className="bg-[#041E42] border border-[#163C70] rounded-xl shadow-xl py-2"
                 >
-                  {OUR_SERVICES_MENU.map((serviceItem) => {
+                  {coreServices.map((serviceItem) => {
                     const isCurrent =
                       (serviceItem.route.page === 'plumbing-service' &&
                         (currentRoute.page === 'plumbing-service' ||
@@ -242,7 +243,7 @@ export function Header({ currentRoute, onNavigate }: HeaderProps) {
 
               {mobileServicesOpen && (
                 <div className="mt-1 ml-3 pl-3 border-l border-[#163C70] flex flex-col gap-1">
-                  {OUR_SERVICES_MENU.map((serviceItem) => {
+                  {coreServices.map((serviceItem) => {
                     const isCurrent =
                       (serviceItem.route.page === 'plumbing-service' &&
                         (currentRoute.page === 'plumbing-service' ||

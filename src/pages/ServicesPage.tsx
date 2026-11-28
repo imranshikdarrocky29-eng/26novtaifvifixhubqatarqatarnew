@@ -3,10 +3,10 @@ import { ArrowRight, Search, Phone, MessageCircle } from 'lucide-react';
 import { RoutePath, routeToPath } from '../types/navigation';
 import {
   COMPANY_INFO,
-  PLUMBING_SERVICES,
   ServiceCategory,
   getWhatsAppUrl,
 } from '../data/plumbingData';
+import { useServicesContent } from '../context/ServicesContentContext';
 import { ResilientImage } from '../components/ResilientImage';
 import { CallToActionBand } from '../components/CallToActionBand';
 
@@ -22,10 +22,11 @@ const CATEGORIES: ('All' | ServiceCategory)[] = [
 ];
 
 export function ServicesPage({ onNavigate }: ServicesPageProps) {
+  const { plumbingServices } = useServicesContent();
   const [selectedCategory, setSelectedCategory] = useState<'All' | ServiceCategory>('All');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filtered = PLUMBING_SERVICES.filter((service) => {
+  const filtered = plumbingServices.filter((service) => {
     const matchesCategory =
       selectedCategory === 'All' || service.category === selectedCategory;
     const q = searchQuery.trim().toLowerCase();

@@ -22,14 +22,13 @@ import { RoutePath, routeToPath } from '../types/navigation';
 import {
   COMPANY_INFO,
   IMAGES,
-  PLUMBING_SERVICES,
   TESTIMONIALS,
   FAQS,
   WORK_PROCESS,
   ServiceCategory,
   getWhatsAppUrl,
 } from '../data/plumbingData';
-import { OUR_SERVICES_MENU } from '../data/tradeServicesData';
+import { useServicesContent } from '../context/ServicesContentContext';
 import { ResilientImage } from '../components/ResilientImage';
 import { CallToActionBand } from '../components/CallToActionBand';
 
@@ -47,13 +46,14 @@ const HOME_TABS: HomeServiceView[] = [
 ];
 
 export function HomePage({ onNavigate }: HomePageProps) {
+  const { coreServices, plumbingServices } = useServicesContent();
   const [selectedTab, setSelectedTab] = useState<HomeServiceView>('Core Services');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   const filteredPlumbing =
     selectedTab === 'Core Services'
       ? []
-      : PLUMBING_SERVICES.filter((s) => s.category === selectedTab);
+      : plumbingServices.filter((s) => s.category === selectedTab);
 
   const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, route: RoutePath) => {
     e.preventDefault();
@@ -76,7 +76,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
               </h1>
 
               <p className="mt-5 text-sm sm:text-base text-slate-200 leading-relaxed">
-                Complete home &amp; commercial maintenance across Doha, Lusail, The Pearl &amp; Um Salal:
+                Complete home &amp; commercial maintenance across Doha, Lusail, The Pearl, Al Wakra, Um Salal &amp; all over Qatar.
               </p>
 
               <ul
@@ -113,10 +113,11 @@ export function HomePage({ onNavigate }: HomePageProps) {
               <div className="mt-9 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                 <a
                   href={COMPANY_INFO.phoneHref}
+                  aria-label={`Request a Maintenance Service by calling ${COMPANY_INFO.phoneDisplay}`}
                   className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-sm font-semibold text-[#041E42] bg-[#F5B700] hover:bg-[#E0A700] rounded-lg transition-colors duration-150 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5B700]"
                 >
                   <Phone className="w-4 h-4 text-[#041E42]" aria-hidden="true" />
-                  <span className="tabular-nums">Call Now · {COMPANY_INFO.phoneDisplay}</span>
+                  <span>Request a Maintenance Service</span>
                 </a>
 
                 <a
@@ -288,7 +289,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
           {/* Service Cards Grid */}
           {selectedTab === 'Core Services' ? (
             <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {OUR_SERVICES_MENU.map((service) => (
+              {coreServices.map((service) => (
                 <article
                   key={service.slug}
                   className="group bg-white border border-slate-200 rounded-xl overflow-hidden flex flex-col justify-between hover:border-[#041E42]/40 transition-colors duration-150"
