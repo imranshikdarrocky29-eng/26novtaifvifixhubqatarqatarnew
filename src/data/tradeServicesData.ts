@@ -1,6 +1,4 @@
 import { RoutePath } from '../types/navigation';
-import { IMAGES } from './plumbingData';
-import electricImg from '../assets/images/trade_electric_service_1795110282550.jpg';
 import satelliteImg from '../assets/images/trade_satellite_repair_1795110282638.jpg';
 import paintingImg from '../assets/images/trade_painting_service_1795110283350.jpg';
 import carpentryImg from '../assets/images/trade_carpentry_service_1795110282368.jpg';
@@ -8,6 +6,9 @@ import tvImg from '../assets/images/trade_tv_installation_1795110282513.jpg';
 import handymanImg from '../assets/images/trade_handyman_service_1795110282274.jpg';
 import acImg from '../assets/images/trade_ac_maintenance_1795110282693.jpg';
 import weldingImg from '../assets/images/trade_welding_service_1795110283276.jpg';
+
+const plumbingServiceImage = '/assets/aistudio/service-plumbing-reference.png';
+const electricImg = '/assets/aistudio/electrician-service-generated.png';
 
 export interface OurServiceMenuItem {
   index: string;
@@ -45,8 +46,8 @@ export const OUR_SERVICES_MENU: OurServiceMenuItem[] = [
     responseWindow: '45 min Doha dispatch',
     summary:
       'Emergency pipe leak repairs, acoustic leak detection, drain cleaning, water heaters, rooftop tanks, bathroom & kitchen plumbing across Qatar.',
-    image: IMAGES.hero,
-    imageAlt: 'FixHub Qatar plumber inspecting pressurized manifold piping in Doha',
+    image: plumbingServiceImage,
+    imageAlt: 'FixHub Qatar plumber checking a residential pipe manifold and water pressure system in Doha',
   },
   {
     index: '02',
@@ -58,7 +59,7 @@ export const OUR_SERVICES_MENU: OurServiceMenuItem[] = [
     summary:
       'Distribution board diagnostics, RCCB breaker trips, socket and isolator replacement, indoor/outdoor lighting, and pump wiring.',
     image: electricImg,
-    imageAlt: 'Electrician testing residential circuit breaker panel in Doha apartment',
+    imageAlt: 'Electrician in blue workwear testing a residential breaker panel with a multimeter in Doha',
   },
   {
     index: '03',
@@ -153,7 +154,7 @@ export const TRADE_SERVICES: TradeServiceDetail[] = [
     propertyScope: 'Residential & Commercial',
     responseWindow: 'Same-day Doha dispatch',
     image: electricImg,
-    imageAlt: 'Electrician testing residential circuit breaker panel in Doha apartment',
+    imageAlt: 'Electrician in blue workwear testing a residential breaker panel with a multimeter in Doha',
     summary:
       'Safe fault troubleshooting, distribution board repairs, socket and switch replacement, indoor/outdoor lighting, and water heater electrical connections across Qatar.',
     description:
